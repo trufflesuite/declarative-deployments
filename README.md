@@ -1,4 +1,31 @@
-# declarative-deployments
+# Declarative Deployments
+
+- [Introduction](#introduction)
+- [Model a single contract instance](#model-a-single-contract-instance)
+- [Contract instance linked to a library](#contract-instance-linked-to-a-library)
+- [Contract instance with constructor arguments](#contract-instance-with-constructor-arguments)
+- [Contract instance with constructor arguments whose values come from the migration process](#contract-instance-with-constructor-arguments-whose-values-come-from-the-migration-process)
+  - [Should certain constructs automatically capture info?](#should-certain-constructs-automatically-capture-info-)
+- [Reference contracts from NPM/etc. packages](#reference-contracts-from-npm-etc-packages)
+- [Handle the lifecycle of a transaction](#handle-the-lifecycle-of-a-transaction)
+- [Separate any imperative code that we cannot abstract into the solver](#separate-any-imperative-code-that-we-cannot-abstract-into-the-solver)
+- [Handle environmental differences](#handle-environmental-differences)
+  - [Use a state identifier that contains potentially multiple network identifiers](#use-a-state-identifier-that-contains-potentially-multiple-network-identifiers)
+  - [Add a network identifier to each contract that will be deployed](#add-a-network-identifier-to-each-contract-that-will-be-deployed)
+- [Prepare deployment information for easy debugging](#prepare-deployment-information-for-easy-debugging)
+- [Support truffle preserve functionality](#support-truffle-preserve-functionality)
+- [Capture data for frontend use](#capture-data-for-frontend-use)
+- [Implement/provide a signing mechanism](#implement-provide-a-signing-mechanism)
+- [Support for relay transactions](#support-for-relay-transactions)
+- [Support existing Truffle migration flags, like --reset, --f, --to](#support-existing-truffle-migration-flags--like---reset----f----to)
+- [Gas price optimization](#gas-price-optimization)
+- [Handle upgradeable contracts](#handle-upgradeable-contracts)
+- [Control flow -- ensure solver has knowledge of partial state](#control-flow----ensure-solver-has-knowledge-of-partial-state)
+- [For reference, the goals HardHat Ignition seeks to achieve](#for-reference--the-goals-hardhat-ignition-seeks-to-achieve)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+## Introduction
 
 This repository is the place for us to collaborate on putting together a canonical yaml template for use in declarative deployments.
 
@@ -167,7 +194,7 @@ capture:
 
 Truffle should know where things are at a point of failure so you can resume from there. Shouldn't have to start from scratch. This seems like an issue for the solver, but are there things we can add to the yaml to make it easier?
 
-# For reference, the goals HardHat Ignition seeks to achieve
+## For reference, the goals HardHat Ignition seeks to achieve
 
 Obviously our work is separate, but it is good to keep in mind that they do have the benefit
 of user feedback and we should at least consider these concerns as a guide in our work:
