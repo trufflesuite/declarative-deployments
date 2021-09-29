@@ -1,0 +1,38 @@
+version: 0.0.1
+description: declarative deployment file "declarative deployments for Truffle projects
+# put npm packages needed for deployment here
+require: ["dotenv"]
+# organize by network, then by
+deployed:
+  mainnet:
+    SafeMathLib:
+      arguments:
+        - SafeMathLib
+        - options:
+          gasPrice: 15000000
+      capture:
+        - address: "$.address"
+          as: "SafeMathLibAddress"
+          # can also optionally transform the captured variable;
+          # wouldn't do toString() here, just an example
+          transform: "this.SafeMathLibAddress.toString()"
+          # can capture multiple variables
+        - transactionHash: "$.transactionHash"
+          as: "SafeMathLibTransactionHash"
+          # stop execution and error if we don't get the variable
+          # setting to false would mean we continue without it
+          strict: true
+    Escrow:
+      arguments:
+        - Escrow
+      links: ["SafeMathLib"]
+  arbitrum_mainnet:
+    HumanStandardToken:
+      # setting ifTrue tells the solver not to proceed with this deployment unless
+      # we have the designated capture variable. ifTrue could also be a list/array
+      ifTrue: SafeMathLibAddress
+      arguments:
+        - HumanStandardToken
+        # and here is how we would then use the captured variable
+        - "{{ SafeMathLibAddress }}"
+        - "{{ SafeMathLibTransactionHash }}"
