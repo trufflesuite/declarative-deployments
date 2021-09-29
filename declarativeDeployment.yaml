@@ -1,0 +1,9 @@
+#upgraded contract; what other info would be useful for upgraded contracts?
+# how should we indicate the network for these?
+upgraded:
+  UpgradeProxy:
+    upgradeTo: ControllerV5
+    arguments:
+      - UpgradeProxy
+      - kind: transparent
+      - proxyAddress: "..."
