@@ -2,7 +2,7 @@ version: 0.0.1
 description: declarative deployment file "declarative deployments for Truffle projects
 # put npm packages needed for deployment here
 require: ["dotenv"]
-# organize by network, then by
+# organize by network, then by contract
 deployed:
   mainnet:
     SafeMathLib:
