@@ -9,6 +9,7 @@
 - [Reference contracts from NPM/etc. packages](#reference-contracts-from-npm-etc-packages)
 - [Handle the lifecycle of a transaction](#handle-the-lifecycle-of-a-transaction)
 - [Separate any imperative code that we cannot abstract into the solver](#separate-any-imperative-code-that-we-cannot-abstract-into-the-solver)
+- [Handle scripts that need to be executed during the deployment process](##handle-scripts-that-need-to-be-executed-during-the-deployment-process)
 - [Handle environmental differences](#handle-environmental-differences)
   - [Use a state identifier that contains potentially multiple network identifiers](#use-a-state-identifier-that-contains-potentially-multiple-network-identifiers)
   - [Add a network identifier to each contract that will be deployed](#add-a-network-identifier-to-each-contract-that-will-be-deployed)
@@ -115,6 +116,57 @@ One way to do this is to refer to a file that contains a script for doing this, 
         - execution: ./populate-data.js
 ```
 
+## Handle scripts that need to be executed during the deployment process
+
+Scripts may need processing at any point during the deployment flow, and our schema for how they are handled should reflect the needed
+flexibility. Here is an example covering some basic scripting needs:
+
+```yaml
+# open questions:
+# how do we handle passing arguments? do we disallow that in the first iteration?
+# add | once option? (Svelte)
+
+ethereum:
+  - contract: MyContract
+  - contract: MyOtherContract
+    links: MyContract
+
+  # runs once before the given contract is deployed
+  - process:
+    path: <SCRIPT_PATH>
+    before: MyContract
+
+  # runs before multiple contracts are deployed
+  - process:
+    path: <SCRIPT_PATH>
+    before:
+      - MyContract
+      - MyOtherContract
+
+  # runs after MyContract but before MyOtherContract
+  - process:
+    path: <SCRIPT_PATH>
+    before: MyOtherContract
+    after: MyContract
+
+  # runs after each listed contract
+  - process:
+    path: <SCRIPT_PATH>
+    afterEach:
+      - MyContract
+      - MyOtherContract
+
+  # runs before any contract is deployed in this network
+  - process:
+    path: <SCRIPT_PATH>
+    before: all # scoped to this network
+
+  # runs before all contracts no matter what network
+  - process:
+    path: <SCRIPT_PATH>
+    before: allGlobal
+
+```
 ## Handle environmental differences
 
 There are a two (or more!) potentially suitable options to address this concern:
